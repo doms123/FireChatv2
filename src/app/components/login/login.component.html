@@ -1,0 +1,26 @@
+<div class="formLogin">
+  <mat-card>
+    <form [formGroup]="loginForm">
+      <h1><img src="/assets/images/angular.png"></h1>
+
+      <mat-form-field class="fullWidth">
+        <input matInput placeholder="Email" formControlName="email" [(ngModel)]="email" name="email" type="text">
+      </mat-form-field>
+
+      <mat-form-field class="fullWidth">
+        <input matInput placeholder="Password" formControlName="password" [(ngModel)]="password" name="password" type="password">
+      </mat-form-field>
+
+      <div class="button-row tRight">
+        <button mat-raised-button color="primary" [disabled]="is_authenticating">Login</button>
+      </div>
+    </form>
+    <div class="socialLogin">
+      <button mat-raised-button color="primary" class="googleLogin" (click)="loginWithGoogle()" [disabled]="is_authenticating">Login with Google</button>
+      <button mat-raised-button color="primary" class="fbLogin" (click)="loginWithFacebook()" [disabled]="is_authenticating">Login with Facebook</button>
+    </div>
+    <div class="accountSignUp">
+      <p>No account? <a routerLink="/register">Sign Up</a></p>
+    </div>
+  </mat-card>
+</div>
