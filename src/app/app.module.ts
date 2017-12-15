@@ -49,6 +49,8 @@ import { RegisterComponent } from './components/register/register.component';
 
 // Service Imports
 import { AuthService } from './services/auth.service';
+import { HomeComponent } from './components/home/home.component';
+import { AuthGuardService } from './services/auth-guard.service';
 
 // Project Routes
 const appRoutes: Routes = [
@@ -57,7 +59,23 @@ const appRoutes: Routes = [
     component: LoginComponent,
     data: {
       title: 'FireChatv2 | Login' 
+    },
+    
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    data: {
+      title: 'FireChatv2 | Register'
     }
+  },
+  {
+    path: 'home',
+    component: HomeComponent,
+    data: {
+      title: 'FireChatv2 | Home'
+    },
+    canActivate: [AuthGuardService]
   },
   { path: '**', component: PageNotFoundComponent }
 ];
@@ -79,6 +97,7 @@ firebase.initializeApp(config);
     PageNotFoundComponent,
     LoginComponent,
     RegisterComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -121,7 +140,7 @@ firebase.initializeApp(config);
     ),
     HttpModule
   ],
-  providers: [AuthService],
+  providers: [AuthService, AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

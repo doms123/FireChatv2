@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -18,7 +20,9 @@ export class LoginComponent implements OnInit {
   passwordCtrl: FormControl;
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
+    private matSnackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
@@ -29,13 +33,61 @@ export class LoginComponent implements OnInit {
       email: this.emailCtrl,
       password: this.passwordCtrl
     });
+
+    this.checkUserLoggedIn();
+  }
+
+  checkUserLoggedIn() {
+    this.authService.checkUserLoggedIn().then(user => {
+      if(user) {
+        this.router.navigate(['/home']);
+      }
+    });
   }
 
   loginWithGoogle() {
+    this.is_authenticating = true;
     this.authService.loginWithGoogle().then(userData => {
-      this.authService.saveUser(userData).then(response => {
-        console.log('response', response);
+      this.authService.checkIfAccountExist(userData['userid']).then(status => {
+        if (status) { // old user
+          this.router.navigate(['/home']);
+          this.is_authenticating = false;
+        }else { // new user
+          this.authService.saveUser(userData).then(response => {
+            this.router.navigate(['/home']);
+            this.is_authenticating = false;
+          });
+        }
       });
     });
+  }
+
+  loginWithFacebook() {
+    this.is_authenticating = true;
+    this.authService.loginWithFacebook().then(userData => {
+      console.log('userData', userData);
+    });
+  }
+
+  loginSubmit() {
+    this.is_authenticating = true;
+    if (this.loginForm.valid) {
+      this.authService.loginWithUserAndPass(this.email, this.password).then(user => {
+        console.log('useruser', user);
+        if(user['code']) {
+          console.log('code');
+          this.matSnackBar.open(user['message'], "remove", { duration: 3000 });
+        }else {
+          if (user['emailVerified']) {
+            this.router.navigate(['home']);
+          }else {
+            this.matSnackBar.open('Login failed! please verify your email first.', "remove", { duration: 3000 });
+          }
+        }
+        this.is_authenticating = false;
+      });
+    }else {
+      this.matSnackBar.open("Incorrect email or password!", "remove", { duration: 3000 });
+    }
   }
 }

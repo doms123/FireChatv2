@@ -1,3 +1,30 @@
-<p>
-  register works!
-</p>
+<div class="formRegister">
+  <mat-card>
+    <form [formGroup]="registerForm" (submit)="registerSubmit()" novalidate>
+      <h1>
+        <img src="/assets/images/angular.png">
+      </h1>
+
+      <mat-form-field class="fullWidth">
+        <input matInput placeholder="Name" formControlName="name" [(ngModel)]="name" name="name">
+      </mat-form-field>
+
+      <mat-form-field class="fullWidth">
+        <input matInput placeholder="Email" formControlName="email" [(ngModel)]="email" name="email">
+      </mat-form-field>
+
+      <mat-form-field class="fullWidth">
+        <input matInput placeholder="Password" formControlName="password" [(ngModel)]="password" name="password" type="password">
+      </mat-form-field>
+
+      <div class="button-row tRight">
+        <button mat-raised-button color="primary" [disabled]="isSubmitted">Register</button>
+      </div>
+    </form>
+    <div class="accountSignUp">
+      <p>Already have an account?
+        <a routerLink="/">Login</a>
+      </p>
+    </div>
+  </mat-card>
+</div>

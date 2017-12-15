@@ -1,6 +1,6 @@
 <div class="formLogin">
   <mat-card>
-    <form [formGroup]="loginForm">
+    <form [formGroup]="loginForm" (ngSubmit)="loginSubmit()">
       <h1><img src="/assets/images/angular.png"></h1>
 
       <mat-form-field class="fullWidth">
