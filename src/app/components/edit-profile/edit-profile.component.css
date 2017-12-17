@@ -1,0 +1,11 @@
+.editProfile h3 {
+    margin-bottom: 10px;
+}
+
+.editProfile .mat-form-field {
+    width: 100%;
+}
+
+.editProfile button {
+    line-height: 32px;
+}

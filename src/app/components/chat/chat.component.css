@@ -1,0 +1,156 @@
+.chatHead {
+    background: #3f51b5;
+    box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 999;
+    height: 67px;
+    text-align: center;
+}
+
+.chatHead p {
+    color: #fff;
+    font-size: 11px;
+}
+
+.chatHead h1 {
+    margin-top: 12px;
+    color: #fff;
+    font-size: 16px;
+}
+
+.chatHead button {
+    background: none;
+    border: none;
+    position: absolute;
+    left: 15px;
+    height: 24px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.chatHead button i {
+    color: #fff;
+}
+
+.chatPhoto {
+    display: inline-block;
+    position: absolute; 
+    right: 15px;
+    height: 35px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.chatHead img {
+    border-radius: 50%;
+}
+
+.chatPhoto i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    bottom: 0px;
+    right: -1px;
+    border: 1.5px solid #fff;
+}
+
+.chatFooter {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    text-align: center;
+}
+
+.chatFooter button {
+    background: none;
+    border: none;
+    color: #3f51b5;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 24px;
+    margin: auto;
+}
+
+.chatFooter .camera {
+    left: 15px;
+}
+
+.chatFooter .like {
+    right: 15px;
+}
+
+.chatFooter {
+    padding: 15px 0;
+    box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+}
+
+.chatFooter input {
+    width: calc(100% - 88px);
+    border: none;
+    color: #333;
+}
+
+.chatFooter button:focus,
+.chatFooter input:focus {
+    outline: none;
+}
+
+.chatArea {
+    margin: 82px 15px 30px;
+}
+
+.leftChat {
+    overflow: hidden;
+    margin-bottom: 20px;
+    clear: both;
+}
+
+.leftChat .pic {
+    float: left;
+    width: 40px;
+}
+
+.leftChat .message {
+    float: left;
+    margin-left: 10px;
+    color: #333;
+    width: calc(100% - 50px);
+}
+
+.leftChat .pic img {
+    border-radius: 50%;
+}
+
+.message p {
+    background: #eee;
+    padding: 12px 15px;
+    border-radius: 15px;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+.message span {
+    font-size: 11px;
+    display: block;
+}
+
+.rightChat {
+    float: right;
+    clear: both;
+}
+
+.rightChat .message span {
+    text-align: right;
+}
+
+.rightChat .message p {
+    background: #3f51b5;
+    color: #fff;
+}

@@ -10,15 +10,13 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) { }
 
   ngOnInit() {
   }
 
-  logout() {
-    this.authService.logout().then(() => {
-      this.router.navigate(['/']);
-    });
+  goChat(id) {
+    this.router.navigate(['chat/'+id]);
   }
 }

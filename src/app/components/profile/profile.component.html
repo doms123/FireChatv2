@@ -1,0 +1,47 @@
+<app-nav></app-nav>
+<div class="profileBlock">
+  <input type="file" hidden #profilePicUpload name="profilePicUpload" (change)="profileChange($event)">
+  <img src="/assets/images/blank-profile.png" width="100" height="100" alt="" (click)="profilePicUpload.click()">
+  <i class="material-icons camera" (click)="profilePicUpload.click()">local_see</i>
+  <h3>Dominick Sanchez</h3>
+</div>
+
+<table class="profileTbl">
+  <tr>
+    <td><i class="material-icons">email</i></td>
+    <td>
+      <strong>Email Address</strong>
+      <p>dominicksanchez30@gmail.com</p>
+    </td>
+  </tr>
+  <tr>
+    <td><i class="material-icons">phone</i></td>
+    <td>
+      <strong>Phone Number</strong>
+      <p>09957880045</p>
+    </td>
+  </tr>
+  <tr>
+    <td><i class="material-icons">work</i></td>
+    <td>
+      <strong>Work</strong>
+      <p>Senior Front End Web Developer</p>
+    </td>
+  </tr>
+  <tr>
+    <td><i class="material-icons">my_location</i></td>
+    <td>
+      <strong>Address</strong>
+      <p>Malanday Valenzuela city</p>
+    </td>
+  </tr>
+  <tr>
+    <td><i class="material-icons">exit_to_app</i></td>
+    <td (click)="logout()">
+      <strong>Log out</strong>
+      <p>Click to log out</p>
+    </td>
+  </tr>
+</table>
+
+<button mat-fab color="primary" class="editBtn" (click)="editProfile()"><i class="material-icons">mode_edit</i></button>

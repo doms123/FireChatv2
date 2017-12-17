@@ -1,0 +1,78 @@
+.profileBlock {
+    margin-top: 97px;
+    text-align: center;
+    position: relative;
+}
+
+.profileBlock .camera {
+    position: absolute;
+    color: #fff;
+    width: 24px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    bottom: 37px;
+}
+
+.profileBlock img {
+    border-radius: 50%;
+}
+
+.profileBlock h3 {
+    color: #333;
+    font-size: 18px;
+}
+
+.profileTbl {
+    margin-top: 10px;
+}
+
+.profileTbl tr td:nth-child(1) i {
+    font-size: 22px;
+    color: #3f51b5;
+}
+
+.profileTbl tr td:nth-child(1) {
+    width: 50px;
+    text-align: center;
+}
+
+.profileTbl tr td:nth-child(2) {
+    padding-top: 6px;
+}
+
+.profileTbl tr td:nth-child(2) strong {
+    color: #3f51b5;
+    font-size: 14px;
+}
+
+.profileTbl tr {
+    position: relative;
+}
+
+.profileTbl tr:after {
+    width: 100%;
+    height: 1px;
+    background: #0000000f;
+    right: 0;
+    left: 0;
+    content: "";
+    position: absolute;
+}
+
+.profileTbl tr td:nth-child(2) p {
+    display: inline-block;
+    width: calc(100% - 15px);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: #333;
+    font-size: 13px;
+}
+
+.editBtn {
+    position: absolute;
+    bottom: 30px;
+    right: 20px;
+}
+
+

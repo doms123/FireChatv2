@@ -1,0 +1,25 @@
+<div class="editProfile">
+    <h3>Edit Profile</h3>
+    <form [formGroup]="editProfileForm" (ngSubmit)="editProfile()">
+      <mat-form-field>
+        <input matInput placeholder="Name" formControlName="name" [(ngModel)]="name" name="name" type="text">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Email" formControlName="email" [(ngModel)]="email" name="email" type="text">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Phone Number" formControlName="phone" [(ngModel)]="phone" name="phone" type="text">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Work" formControlName="work" [(ngModel)]="work" name="work" type="text">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Address" formControlName="address" [(ngModel)]="address" name="address" type="text">
+      </mat-form-field>
+    
+      <div class="tCenter">
+        <button mat-raised-button type="submit" color="primary" class="confirmBtn">Confirm</button>
+        <button mat-raised-button type="button" color="primary" class="cancelBtn" (click)="onNoClick()">Close</button>
+      </div>
+    </form>
+</div>

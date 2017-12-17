@@ -51,6 +51,13 @@ import { RegisterComponent } from './components/register/register.component';
 import { AuthService } from './services/auth.service';
 import { HomeComponent } from './components/home/home.component';
 import { AuthGuardService } from './services/auth-guard.service';
+import { NavComponent } from './components/nav/nav.component';
+import { FriendsComponent } from './components/friends/friends.component';
+import { PeopleComponent } from './components/people/people.component';
+import { AddFriendComponent } from './components/add-friend/add-friend.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
+import { ChatComponent } from './components/chat/chat.component';
 
 // Project Routes
 const appRoutes: Routes = [
@@ -77,6 +84,38 @@ const appRoutes: Routes = [
     },
     canActivate: [AuthGuardService]
   },
+  {
+    path: 'friends',
+    component: FriendsComponent,
+    data: {
+      title: 'FireChatv2 | Friends'
+    },
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'people',
+    component: PeopleComponent,
+    data: {
+      title: 'FireChatv2 | People'
+    },
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    data: {
+      title: 'FireChatv2 | Profile'
+    },
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'chat/:id',
+    component: ChatComponent,
+    data: {
+      title: 'FireChatv2 | Profile'
+    },
+    canActivate: [AuthGuardService]
+  },
   { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -98,7 +137,15 @@ firebase.initializeApp(config);
     LoginComponent,
     RegisterComponent,
     HomeComponent,
+    NavComponent,
+    FriendsComponent,
+    PeopleComponent,
+    AddFriendComponent,
+    ProfileComponent,
+    EditProfileComponent,
+    ChatComponent,
   ],
+  entryComponents: [AddFriendComponent, EditProfileComponent],
   imports: [
     BrowserModule,
     FormsModule,

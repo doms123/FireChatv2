@@ -95,7 +95,9 @@ export class AuthService {
     const promise = new Promise((resolve, reject) => {
       firebase.auth().createUserWithEmailAndPassword(email, password).then(user => {
         resolve(user);
-      });
+      }).catch(err => {
+        resolve(err);
+      })
     });
 
     return promise;
@@ -120,8 +122,12 @@ export class AuthService {
 
   sendVerificationEmail() {
     const promise = new Promise((resolve, reject) => {
-      firebase.auth().currentUser.sendEmailVerification().then(data => {
-        resolve(data);
+      firebase.auth().onAuthStateChanged((user) => {
+        user.sendEmailVerification().then(data => {
+          resolve(data);
+        }).catch(err => {
+          resolve(err);
+        });
       });
     });
 

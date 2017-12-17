@@ -1,4 +1,4 @@
-.formLogin {
+  .formLogin {
     max-width: 340px;
     width: 100%;
     margin: 0 auto;
@@ -76,5 +76,14 @@
     .formLogin {
       width: calc(100% - 20px);
       margin: 0 auto;
+      padding-top: 20px;
+    }
+
+    .mat-card {
+      box-shadow: none !important;
+    }
+
+    .formLogin {
+      max-width: none;
     }
   }

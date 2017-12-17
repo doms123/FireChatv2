@@ -1,0 +1,18 @@
+mat-list {
+    padding-top: 0;
+}
+
+.mat-list .mat-list-item .mat-list-icon {
+    width: auto;
+    height: auto;
+    font-size: 42px;
+}
+
+.mat-list-text {
+    padding-left: 0 !important;
+}
+
+
+
+
+

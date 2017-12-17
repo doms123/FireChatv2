@@ -42,16 +42,27 @@ export class RegisterComponent implements OnInit {
   }
 
   registerSubmit() {
+    this.isSubmitted = true;
     if (this.registerForm.valid) {
       this.authService.register(this.email, this.password).then((userData) => {
-        console.log('userData', userData);
-        this.authService.saveUserRegistered(userData['uid'], this.name, this.email, this.password).then(res => {
-          this.authService.sendVerificationEmail().then(() => {
-            // console.log('emailRes', emailRes);
+        if(userData['code']) {
+          this.isSubmitted = false;
+          this.matSnackBar.open(userData['message'], "close", {duration: 3000});
+        }else {
+          this.authService.saveUserRegistered(userData['uid'], this.name, this.email, this.password).then(res => {
+            this.authService.sendVerificationEmail().then((emailRes) => {
+              this.isSubmitted = false;
+              this.name = "";
+              this.email = "";
+              this.password = "";
+              this.router.navigate(['']);
+              this.matSnackBar.open("Email verification was sent to your email", "close", {duration: 5000});
+            });
           });
-        });
+        }
       });
     }else {
+      this.isSubmitted = false;
       this.matSnackBar.open("Error! some of fields are incorrect", "close", {duration: 3000});
     }
   }
