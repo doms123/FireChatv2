@@ -11,6 +11,45 @@ export class AuthService {
   constructor(
     private http: Http,
   ) {
+    setInterval(() => {
+      this.userPresence();
+    }, 5000);
+  }
+
+  userPresence() {
+    firebase.auth().onAuthStateChanged((user) => {
+      const userId = user.uid;
+      const firestoreUserRef = firebase.firestore().doc(`users/${userId}`);
+      const firebaseUserRef = firebase.database().ref(`users/${userId}`);
+
+      firebaseUserRef.set({
+        isOnline: true
+      });
+
+      firebase.database().ref('.info/connected').on('value', (snapshot) => {
+        console.log('snapshot', snapshot.val());
+        if(snapshot.val() == false) {
+          return;
+        }
+
+        firebaseUserRef.onDisconnect().set({
+          isOnline: 'false'
+        }).then(() => {
+         
+        });
+       
+        // userRef.onDisconnect().set(isOfflineForDatabase).then(function () {
+        //   // The promise returned from .onDisconnect().set() will
+        //   // resolve as soon as the server acknowledges the onDisconnect() 
+        //   // request, NOT once we've actually disconnected:
+        //   // https://firebase.google.com/docs/reference/js/firebase.database.OnDisconnect
+
+        //   // We can now safely set ourselves as "online" knowing that the
+        //   // server will mark us as offline once we lose connection.
+        //   userStatusDatabaseRef.set(isOnlineForDatabase);
+        // });
+      });
+    });
   }
 
   loginWithGoogle() {
@@ -19,6 +58,7 @@ export class AuthService {
       firebase.auth().signInWithPopup(googleProvider).then(res => {
         let user = res.user;
         let userObj = {
+          userid: user.uid,
           name: user.displayName,
           email: user.email,
           photo: user.photoURL
@@ -48,6 +88,9 @@ export class AuthService {
 
   saveUser(userData:object) {
     const promise = new Promise((resolve, reject) => {
+      firebase.database().ref(`users/${userData['userid']}`).set({
+        isOnline: false
+      });
       this.db.collection('users').doc(userData['userid']).set(userData).then(res => {
         resolve(res);
       }).catch(err => {
@@ -105,6 +148,9 @@ export class AuthService {
 
   saveUserRegistered(uid: string, name: string, email: string, password: string) {
     const promise = new Promise((resolve, reject) => {
+      firebase.database().ref(`users/${uid}`).set({
+        isOnline: false
+      });
       this.db.collection('users').doc(uid).set({
         name: name,
         email: email,
@@ -136,6 +182,16 @@ export class AuthService {
 
   logout() {
     const promise = new Promise((resolve, reject) => {
+      firebase.auth().onAuthStateChanged((user) => {
+        const userId = user.uid;
+        const firestoreUserRef = firebase.firestore().doc(`users/${userId}`);
+        const firebaseUserRef = firebase.database().ref(`users/${userId}`);
+
+        firebaseUserRef.set({
+          isOnline: false
+        });
+      });
+
       firebase.auth().signOut().then(res => {
         resolve(res);
       }).catch(err => {

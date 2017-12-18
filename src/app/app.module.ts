@@ -46,11 +46,7 @@ import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
-
-// Service Imports
-import { AuthService } from './services/auth.service';
 import { HomeComponent } from './components/home/home.component';
-import { AuthGuardService } from './services/auth-guard.service';
 import { NavComponent } from './components/nav/nav.component';
 import { FriendsComponent } from './components/friends/friends.component';
 import { PeopleComponent } from './components/people/people.component';
@@ -58,6 +54,11 @@ import { AddFriendComponent } from './components/add-friend/add-friend.component
 import { ProfileComponent } from './components/profile/profile.component';
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
 import { ChatComponent } from './components/chat/chat.component';
+
+// Service Imports
+import { AuthService } from './services/auth.service';
+import { AuthGuardService } from './services/auth-guard.service';
+import { PeopleService } from './services/people.service';
 
 // Project Routes
 const appRoutes: Routes = [
@@ -187,7 +188,7 @@ firebase.initializeApp(config);
     ),
     HttpModule
   ],
-  providers: [AuthService, AuthGuardService],
+  providers: [AuthService, AuthGuardService, PeopleService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
