@@ -1,66 +1,30 @@
 <app-nav></app-nav>
-<form class="searchForm">
+<form class="searchForm" [formGroup]="searchForm" (submit)="search()">
   <mat-form-field>
-    <input type="text" matInput placeholder="Search">
-    <mat-icon matSuffix>search</mat-icon>
+    <input type="text" matInput placeholder="Search" formControlName="searchTxt" [(ngModel)]="searchTxt" name="searchTxt" (keyup)="searching()">
+    <button type="submit" *ngIf="!isSearching"><mat-icon matSuffix >search</mat-icon></button>
+    <button type="button" (click)="clearSearch()" *ngIf="isSearching"><mat-icon matSuffix >clear</mat-icon></button>
   </mat-form-field>
 </form>
-<ul class="chatList">
-  <li>
-    <div class="chatBlock01">
-      <img src="/assets/images/blank-profile.png" width="50" height="50" alt="">
-      <i class="online"></i>
-    </div>
-    <div class="chatBlock02">
-      <strong>Dominick Sanchez</strong>
-      <span class="email">dominicksanchez30@gmail.comdominicksanchez30@gmail.comdominicksanchez30@gmail.com</span>
-      <button (click)="addFriend()"><i class="material-icons">person_add</i></button>
-    </div>
-  </li>
-  <li>
-    <div class="chatBlock01">
-      <img src="/assets/images/blank-profile.png" width="50" height="50" alt="">
-      <i class="online"></i>
-    </div>
-    <div class="chatBlock02">
-      <strong>Dominick Sanchez</strong>
-      <span class="email">dominicksanchez30@gmail.comdominicksanchez30@gmail.comdominicksanchez30@gmail.com</span>
-      <button (click)="addFriend()"><i class="material-icons">person_add</i></button>
-    </div>
-  </li>
-  <li>
-    <div class="chatBlock01">
-      <img src="/assets/images/blank-profile.png" width="50" height="50" alt="">
-      <i class="online"></i>
-    </div>
-    <div class="chatBlock02">
-      <strong>Dominick Sanchez</strong>
-      <span class="email">dominicksanchez30@gmail.comdominicksanchez30@gmail.comdominicksanchez30@gmail.com</span>
-      <button (click)="addFriend()"><i class="material-icons">person_add</i></button>
-    </div>
-  </li>
-  <li>
-    <div class="chatBlock01">
-      <img src="/assets/images/blank-profile.png" width="50" height="50" alt="">
-      <i class="online"></i>
-    </div>
-    <div class="chatBlock02">
-      <strong>Dominick Sanchez</strong>
-      <span class="email">dominicksanchez30@gmail.comdominicksanchez30@gmail.comdominicksanchez30@gmail.com</span>
-      <button (click)="addFriend()"><i class="material-icons">person_add</i></button>
-    </div>
-  </li>
-  <li>
-    <div class="chatBlock01">
-      <img src="/assets/images/blank-profile.png" width="50" height="50" alt="">
-      <i class="online"></i>
-    </div>
-    <div class="chatBlock02">
-      <strong>Dominick Sanchez</strong>
-      <span class="email">dominicksanchez30@gmail.comdominicksanchez30@gmail.comdominicksanchez30@gmail.com</span>
-      <button (click)="addFriend()"><i class="material-icons">person_add</i></button>
-    </div>
-  </li>
-</ul>
+<mat-spinner *ngIf="fetching"></mat-spinner>
+<div *ngIf="peoples">
+  <ul class="chatList" *ngIf="!fetching">
+    <li *ngFor="let people of peoples">
+      <div class="chatBlock01">
+        <img src="/assets/images/blank-profile.png" width="50" height="50" alt="">
+        <i [class.online]="people.isOnline" [class.offline]="!people.isOnline"></i>
+      </div>
+      <div class="chatBlock02">
+        <strong>{{people.name}}</strong>
+        <span class="email">dominicksanchez30@gmail.comdominicksanchez30@gmail.comdominicksanchez30@gmail.com</span>
+        <button (click)="addFriend()"><i class="material-icons">person_add</i></button>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="peoples?.length == 0 && !fetching">
+  <p class="noResult">No result found.</p>
+</div>
 
 

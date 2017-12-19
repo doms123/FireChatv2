@@ -18,37 +18,32 @@ export class AuthService {
 
   userPresence() {
     firebase.auth().onAuthStateChanged((user) => {
-      const userId = user.uid;
-      const firestoreUserRef = firebase.firestore().doc(`users/${userId}`);
-      const firebaseUserRef = firebase.database().ref(`users/${userId}`);
+      if(user) {
+        const userId = user.uid;
+        const firestoreUserRef = firebase.firestore().doc(`users/${userId}`);
+        const firebaseUserRef = firebase.database().ref(`users/${userId}`);
 
-      firebaseUserRef.set({
-        isOnline: true
-      });
+        firebase.database().ref('.info/connected').on('value', (snapshot) => {
+          if(snapshot.val() == false) {
+            firestoreUserRef.update({
+              isOnline: false
+            });
+            return;
+          }
 
-      firebase.database().ref('.info/connected').on('value', (snapshot) => {
-        console.log('snapshot', snapshot.val());
-        if(snapshot.val() == false) {
-          return;
-        }
+          firebaseUserRef.onDisconnect().set({
+            isOnline: 'false'
+          }).then(() => {
+            firebaseUserRef.set({
+              isOnline: true
+            });
 
-        firebaseUserRef.onDisconnect().set({
-          isOnline: 'false'
-        }).then(() => {
-         
+            firestoreUserRef.update({
+              isOnline: true
+            });
+          });
         });
-       
-        // userRef.onDisconnect().set(isOfflineForDatabase).then(function () {
-        //   // The promise returned from .onDisconnect().set() will
-        //   // resolve as soon as the server acknowledges the onDisconnect() 
-        //   // request, NOT once we've actually disconnected:
-        //   // https://firebase.google.com/docs/reference/js/firebase.database.OnDisconnect
-
-        //   // We can now safely set ourselves as "online" knowing that the
-        //   // server will mark us as offline once we lose connection.
-        //   userStatusDatabaseRef.set(isOnlineForDatabase);
-        // });
-      });
+      }
     });
   }
 
@@ -91,6 +86,8 @@ export class AuthService {
       firebase.database().ref(`users/${userData['userid']}`).set({
         isOnline: false
       });
+
+      localStorage.setItem('user_id', userData['userid']);
       this.db.collection('users').doc(userData['userid']).set(userData).then(res => {
         resolve(res);
       }).catch(err => {
@@ -104,7 +101,10 @@ export class AuthService {
   checkUserLoggedIn() {
     let promise = new Promise((resolve, reject) => {
       firebase.auth().onAuthStateChanged((user) => {
-        resolve(user);
+        if(user) {
+          localStorage.setItem('user_id', user.uid);
+          resolve(user);
+        }
       })
     });
 
@@ -155,7 +155,8 @@ export class AuthService {
         name: name,
         email: email,
         password: password,
-        photo: ''
+        photo: '',
+        user_id: uid
       }).then(res => {
         resolve(res);
       }).catch(err => {
@@ -183,13 +184,15 @@ export class AuthService {
   logout() {
     const promise = new Promise((resolve, reject) => {
       firebase.auth().onAuthStateChanged((user) => {
-        const userId = user.uid;
-        const firestoreUserRef = firebase.firestore().doc(`users/${userId}`);
-        const firebaseUserRef = firebase.database().ref(`users/${userId}`);
-
-        firebaseUserRef.set({
-          isOnline: false
-        });
+        if(user) {
+          const userId = user.uid;
+          const firestoreUserRef = firebase.firestore().doc(`users/${userId}`);
+          const firebaseUserRef = firebase.database().ref(`users/${userId}`);
+  
+          firebaseUserRef.set({
+            isOnline: false
+          });
+        }
       });
 
       firebase.auth().signOut().then(res => {

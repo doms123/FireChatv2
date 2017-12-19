@@ -12,7 +12,17 @@ mat-list {
     padding-left: 0 !important;
 }
 
+.searchForm button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: none;
+    border: none;
+}
 
+.noResult {
+    padding-left: 15px;
+}
 
 
 

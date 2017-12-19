@@ -48,7 +48,6 @@ export class LoginComponent implements OnInit {
   loginWithGoogle() {
     this.is_authenticating = true;
     this.authService.loginWithGoogle().then(userData => {
-      console.log('userData', userData);
       this.authService.checkIfAccountExist(userData['userid']).then(status => {
         if (status) { // old user
           this.router.navigate(['/home']);

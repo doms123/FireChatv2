@@ -114,3 +114,19 @@ body {
     font-size: 11px;
     top: 8px;
 }
+
+.mat-progress-spinner {
+    width: 50px !important;
+    height: 50px !important;
+    position: absolute !important;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    left: 0;
+    right: 0;
+}
+
+.mat-progress-spinner svg {
+    width: 50px !important;
+    height: 50px !important;
+}
