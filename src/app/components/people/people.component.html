@@ -9,22 +9,26 @@
 <mat-spinner *ngIf="fetching"></mat-spinner>
 <div *ngIf="peoples">
   <ul class="chatList" *ngIf="!fetching">
-    <li *ngFor="let people of peoples">
+    <li *ngFor="let people of peoples let i = index">
       <div class="chatBlock01">
         <img src="/assets/images/blank-profile.png" width="50" height="50" alt="">
         <i [class.online]="people.isOnline" [class.offline]="!people.isOnline"></i>
       </div>
       <div class="chatBlock02">
         <strong>{{people.name}}</strong>
-        <span class="email">dominicksanchez30@gmail.comdominicksanchez30@gmail.comdominicksanchez30@gmail.com</span>
-        <button (click)="addFriend()"><i class="material-icons">person_add</i></button>
+        <span class="email">{{people.email}}</span>
+        <button (click)="addFriend(people, i)"><i class="material-icons">person_add</i></button>
       </div>
     </li>
   </ul>
 </div>
 
-<div *ngIf="peoples?.length == 0 && !fetching">
-  <p class="noResult">No result found.</p>
+<div *ngIf="peoples?.length == 0 && !fetching && !noSearchMsg">
+  <p class="noResult">No people yet.</p>
+</div>
+
+<div *ngIf="peoples?.length == 0 && !fetching && noSearchMsg">
+  <p class="noResult">No people found.</p>
 </div>
 
 

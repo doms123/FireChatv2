@@ -12,15 +12,18 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styleUrls: ['./people.component.css']
 })
 export class PeopleComponent implements OnInit {
-  peoples:any;
+  peoples:any = [];
   db:any = firebase.firestore();
   fetching:boolean = false;
   searchTxt: string;
   userId: string;
+  userEmail: string;
   searchForm: FormGroup;
   searchTxtCtrl: FormControl;
   searchResultCount: number;
   isSearching:boolean = false;
+  hasLoadingSpinner:boolean = true;
+  noSearchMsg:boolean = false;
 
   constructor(
     public dialog: MatDialog, 
@@ -29,6 +32,7 @@ export class PeopleComponent implements OnInit {
     
   ) {
     this.userId = localStorage.getItem('user_id');
+    this.userEmail = localStorage.getItem('email');
     this.loadPeoples();
   }
 
@@ -41,26 +45,53 @@ export class PeopleComponent implements OnInit {
   }
 
   loadPeoples() {
-    this.fetching = true;
-    
-    this.db.collection('users').onSnapshot(users => {
-      const peopleObj = users.docs.filter(doc => doc.id != this.userId);
-      this.peoples = users.docs.filter(doc => doc.id != this.userId).map(user => user.data());
-      setTimeout(() => {
-        this.fetching = false;
-        this.isSearching = false;
-      }, 400);
-    });
+    if (this.hasLoadingSpinner) {
+      this.fetching = true;
+      this.db.collection('users').get().then(users => {
+        let peopleObj = users.docs.filter(doc => doc.id != this.userId);
+        let peoples = users.docs.filter(doc => doc.id != this.userId).map(user => user.data());
+        let userEmailArr = this.userEmail.split('@');
+        let userEmail = userEmailArr[0];
+        this.peoples = [];
+        for (let people of peoples) {
+          let peopleEmailArr = people.email.split('@');
+          let peopleEmail = peopleEmailArr[0];
+          let friendName = (userEmail > peopleEmail) ? peopleEmail + '_' + userEmail : userEmail + '_' + peopleEmail;
+
+          this.db.collection('friends').doc(friendName).get().then(data => {
+            if (data.exists) {
+              console.log('friend request was sent');
+            } else {
+              this.peoples.push(people);
+              this.fetching = false;
+              this.isSearching = false;
+            }
+          }).then(() => {
+            if (this.peoples.length == 0) {
+              this.fetching = false;
+              this.isSearching = false;
+            }
+          });
+        }
+      });
+    }
   }
 
-  addFriend() {
+  addFriend(friend:object, index) {
     const dialogRef = this.dialog.open(AddFriendComponent, {
       width: '300px',
-      data: {name: 'Dominick Sanchez'}
+      data: {
+        // index: 
+        user_id: friend['user_id'],
+        email: friend['email'],
+
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      
+      if (result) {
+        this.peoples.splice(index, 1);
+      }
     });
   }
 
@@ -68,28 +99,51 @@ export class PeopleComponent implements OnInit {
     if(this.searchTxt != '' && this.searchTxt !== undefined) {
       this.fetching = true;
       this.db.collection('users').where('name', '==', this.searchTxt).get().then(res => {
-        this.peoples = [];  
+        let peoples = [];
+        let filteredPeople = [];
         if(res.docs.length) { // Has a search result
-          console.log('resres', res.length);
           res.forEach((doc) => {
-          
-            console.log(doc.id, " => ", doc.data());
-            
-            this.peoples.push(doc.data());
+            peoples.push(doc.data());
           });
+
+          let userEmailArr = this.userEmail.split('@');
+          let userEmail = userEmailArr[0];
+          for (let people of peoples) {
+            let peopleEmailArr = people.email.split('@');
+            let peopleEmail = peopleEmailArr[0];
+            let friendName = (userEmail > peopleEmail) ? peopleEmail + '_' + userEmail : userEmail + '_' + peopleEmail;
+            this.db.collection('friends').doc(friendName).get().then(data => {
+              if (data.exists) {
+                console.log('friend request was sent');
+              } else {
+                if (userEmail != peopleEmail) {
+                  filteredPeople.push(people);
+                }
+                
+                this.fetching = false;
+                this.isSearching = true;
+              }
+            }).then(() => {
+              this.fetching = false;
+              this.noSearchMsg = true;
+            });
+          }
+          this.peoples = filteredPeople;
         }else {
+          this.peoples = [];
           this.searchResultCount = 0;
+          this.fetching = false;
+          this.noSearchMsg = true;
         }
-        this.fetching = false;
       });
-    }else {
-      this.loadPeoples();
     }
   }
 
   searching() {
-    if(this.searchTxt.length) {
-      this.isSearching = true;
+    if (this.searchTxt != '' && this.searchTxt !== undefined) {
+      if(this.searchTxt.length) {
+        this.isSearching = true;
+      }
     }
   }
 

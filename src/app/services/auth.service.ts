@@ -88,6 +88,7 @@ export class AuthService {
       });
 
       localStorage.setItem('user_id', userData['userid']);
+      localStorage.setItem('email', userData['email']);
       this.db.collection('users').doc(userData['userid']).set(userData).then(res => {
         resolve(res);
       }).catch(err => {
@@ -103,6 +104,7 @@ export class AuthService {
       firebase.auth().onAuthStateChanged((user) => {
         if(user) {
           localStorage.setItem('user_id', user.uid);
+          localStorage.setItem('email', user.email);
           resolve(user);
         }
       })
@@ -183,19 +185,18 @@ export class AuthService {
 
   logout() {
     const promise = new Promise((resolve, reject) => {
-      firebase.auth().onAuthStateChanged((user) => {
-        if(user) {
-          const userId = user.uid;
-          const firestoreUserRef = firebase.firestore().doc(`users/${userId}`);
-          const firebaseUserRef = firebase.database().ref(`users/${userId}`);
-  
-          firebaseUserRef.set({
-            isOnline: false
-          });
-        }
-      });
-
       firebase.auth().signOut().then(res => {
+        const userId = localStorage.getItem('user_id');
+        const firestoreUserRef = firebase.firestore().doc(`users/${userId}`);
+        const firebaseUserRef = firebase.database().ref(`users/${userId}`);
+
+        firebaseUserRef.set({
+          isOnline: false
+        });
+
+        firestoreUserRef.update({
+          isOnline: false
+        });
         resolve(res);
       }).catch(err => {
         resolve(err);

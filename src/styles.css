@@ -130,3 +130,7 @@ body {
     width: 50px !important;
     height: 50px !important;
 }
+
+button:focus {
+    outline: none !important;
+}
