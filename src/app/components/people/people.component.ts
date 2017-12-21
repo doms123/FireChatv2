@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, ElementRef, EventEmitter } from '@angular/core';
 import { AddFriendComponent } from '../add-friend/add-friend.component';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar} from '@angular/material';
 import { PeopleService } from '../../services/people.service';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import JRoll from 'jroll';
 
 @Component({
   selector: 'app-people',
@@ -28,7 +29,8 @@ export class PeopleComponent implements OnInit {
   constructor(
     public dialog: MatDialog, 
     public snackBar: MatSnackBar,
-    private peopleService: PeopleService
+    private peopleService: PeopleService,
+    private elementRef: ElementRef
     
   ) {
     this.userId = localStorage.getItem('user_id');
