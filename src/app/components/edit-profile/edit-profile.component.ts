@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar} from '@angular/material';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ProfileService } from '../../services/profile.service';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -24,7 +25,8 @@ export class EditProfileComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<EditProfileComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public snackBar: MatSnackBar
+    public snackBar: MatSnackBar,
+    public profileService: ProfileService
   ) { }
 
   ngOnInit() {
@@ -41,11 +43,25 @@ export class EditProfileComponent implements OnInit {
       work: this.workCtrl,
       address: this.addressCtrl
     });
+
+    this.name = this.data.user['name'];
+    this.email = this.data.user['email'];
+    this.phone = this.data.user['phone'];
+    this.work = this.data.user['work'];
+    this.address = this.data.user['address'];
   }
 
   editProfile() {
     if(this.editProfileForm.valid) {
-      console.log('valid');
+      this.profileService.saveUpdate(this.editProfileForm.value).then(res => {
+        if(res == 1) {
+          this.snackBar.open('Profile information was updated', 'close', { duration: 4000 });
+          this.dialogRef.close(1);
+        }else {
+          this.snackBar.open('Error! updating your profile information', 'close', { duration: 4000 });          
+        }
+        
+      });
     }else {
       this.snackBar.open('Please fill out all the required fields', 'close', {duration: 4000});
     }

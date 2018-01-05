@@ -7,29 +7,31 @@
   </mat-form-field>
 </form>
 <mat-spinner *ngIf="fetching"></mat-spinner>
-<div *ngIf="peoples" #pulldown>
-  <ul class="chatList" *ngIf="!fetching">
-    <li *ngFor="let people of peoples let i = index">
-      <div class="chatBlock01">
-        <img src="/assets/images/blank-profile.png" width="50" height="50" alt="">
-        <i [class.online]="people.isOnline" [class.offline]="!people.isOnline"></i>
-      </div>
-      <div class="chatBlock02">
-        <strong>{{people.name}}</strong>
-        <span class="email">{{people.email}}</span>
-        <button (click)="addFriend(people, i)"><i class="material-icons">person_add</i></button>
-      </div>
-    </li>
-  </ul>
-</div>
-
+  <div #pulldown>
+    <div *ngIf="peoples">
+      <ul class="chatList" *ngIf="!fetching">
+        <li *ngFor="let people of peoples let i = index">
+          <div class="chatBlock01">
+            <img src="/assets/images/blank-profile.png" *ngIf="people?.photo == ''" width="50" height="50" alt="">
+            <img src="{{people?.photo}}" *ngIf="people?.photo != ''" width="50" height="50" alt="">
+            <i [class.online]="people.isOnline" [class.offline]="!people.isOnline"></i>
+          </div>
+          <div class="chatBlock02">
+            <strong>{{people.name}}</strong>
+            <span class="email">{{people.email}}</span>
+            <button (click)="addFriend(people, i)"><i class="material-icons">person_add</i></button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
 
 <div *ngIf="peoples?.length == 0 && !fetching && !noSearchMsg">
-  <p class="noResult">No people yet.</p>
+  <p class="noResult">No peoples yet.</p>
 </div>
 
 <div *ngIf="peoples?.length == 0 && !fetching && noSearchMsg">
-  <p class="noResult">No people found.</p>
+  <p class="noResult">No peoples found.</p>
 </div>
 
 

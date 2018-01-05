@@ -134,3 +134,13 @@ body {
 button:focus {
     outline: none !important;
 }
+
+.jroll-plugin-pulldown-icon {
+    top: 10px !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: auto !important;
+    bottom: 52px !important;
+    width: inherit !important;
+}
+

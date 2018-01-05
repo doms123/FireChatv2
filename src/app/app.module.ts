@@ -59,6 +59,7 @@ import { ChatComponent } from './components/chat/chat.component';
 import { AuthService } from './services/auth.service';
 import { AuthGuardService } from './services/auth-guard.service';
 import { PeopleService } from './services/people.service';
+import { ProfileService } from './services/profile.service';
 
 // Project Routes
 const appRoutes: Routes = [
@@ -188,7 +189,7 @@ firebase.initializeApp(config);
     ),
     HttpModule
   ],
-  providers: [AuthService, AuthGuardService, PeopleService],
+  providers: [AuthService, AuthGuardService, PeopleService, ProfileService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

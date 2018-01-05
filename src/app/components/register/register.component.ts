@@ -41,6 +41,19 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  capitalize(str) {
+    var wordCount = str.split(' ');
+    var upperStr = '';
+    for(let x = 0; x <= wordCount.length - 1; x++) {
+      if (x > 0) {
+        upperStr += ' ';
+      }
+      upperStr += wordCount[x].charAt(0).toUpperCase() + wordCount[x].slice(1).toLowerCase();
+    }
+
+    return upperStr;
+  }
+
   registerSubmit() {
     this.isSubmitted = true;
     if (this.registerForm.valid) {
@@ -49,7 +62,7 @@ export class RegisterComponent implements OnInit {
           this.isSubmitted = false;
           this.matSnackBar.open(userData['message'], "close", {duration: 3000});
         }else {
-          this.authService.saveUserRegistered(userData['uid'], this.name, this.email, this.password).then(res => {
+          this.authService.saveUserRegistered(userData['uid'], this.capitalize(this.name), this.email, this.password).then(res => {
             this.authService.sendVerificationEmail().then((emailRes) => {
               this.isSubmitted = false;
               this.name = "";

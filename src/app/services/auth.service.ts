@@ -89,6 +89,10 @@ export class AuthService {
 
       localStorage.setItem('user_id', userData['userid']);
       localStorage.setItem('email', userData['email']);
+      userData['phone'] = '';
+      userData['work'] = '';
+      userData['address'] = '';
+      userData['name'] = '';
       this.db.collection('users').doc(userData['userid']).set(userData).then(res => {
         resolve(res);
       }).catch(err => {
@@ -158,6 +162,9 @@ export class AuthService {
         email: email,
         password: password,
         photo: '',
+        address: '',
+        work: '',
+        phone: '',
         user_id: uid
       }).then(res => {
         resolve(res);
